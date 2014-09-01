@@ -1,3 +1,5 @@
+from to_coursera import compute_in_degrees
+
 EX_GRAPH0 = {0: set([1, 2]),
              1: set([]),
              2: set([])}
@@ -33,20 +35,51 @@ class Graph():
 
     def make_complete_graph(self, num_nodes):
         """
-        Creates complete graph from given nodes that every node is conected to every node with no selfloops
+        Takes the number of nodes num_nodes and returns a dictionary corresponding to a complete directed graph with
+        the specified number of nodes. A complete graph contains all possible edges subject to the restriction that
+        self-loops are not allowed. The nodes of the graph should be numbered 0 to num_nodes - 1 when num_nodes is
+        positive. Otherwise, the function returns a dictionary corresponding to the empty graph.
         """
-        return {}
+        if num_nodes <= 0:
+            return {}
+        nodes = [x for x in range(0, num_nodes)]
+        graph = {}
+        for node in nodes:
+            graph[node] = set([x for x in range(num_nodes) if x != node])
 
+        return graph
 
     def compute_in_degrees(self, digraph):
         """
-
+        Takes a directed graph digraph (represented as a dictionary) and computes the in-degrees for the nodes in the
+        graph. The function should return a dictionary with the same set of keys (nodes) as digraph whose corresponding
+        values are the number of edges whose head matches a particular node.
         """
 
-        return {}
+        nodes = digraph.keys()
+        graph = {x: 0 for x in nodes}
+        for node in nodes:
+            for edge in digraph[node]:
+                graph[edge] += 1
+
+        return graph
+
 
     def in_degree_distribution(self, digraph):
         """
-
+        Takes a directed graph digraph (represented as a dictionary) and computes the unnormalized distribution of the
+        in-degrees of the graph. The function should return a dictionary whose keys correspond to in-degrees of nodes
+        in the graph. The value associated with each particular in-degree is the number of nodes with that in-degree.
+        In-degrees with no corresponding nodes in the graph are not included in the dictionary.
         """
-        return {}
+
+        in_degrees = compute_in_degrees(digraph)
+        output = {}
+        for value in in_degrees.values():
+            current_key = value
+            if output.has_key(current_key):
+                output[current_key] += 1
+            else:
+                output[current_key] = 1
+
+        return output
